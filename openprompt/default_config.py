@@ -3,7 +3,6 @@ from yacs.config import CfgNode, _merge_a_into_b
 import os
 from collections import defaultdict 
 
-
 def get_default_config():
     # OpenPrompt's default configuration options
     cfg = CfgNode(new_allowed=True)
@@ -169,7 +168,7 @@ def get_default_config():
     cfg.dataloader.truncate_method = "head" # choosing from balanced, head, tail
 
     ## LEARINING SETTING  ####################################################
-    cfg.learning_setting = None   # selecting from "full", "zero-shot", "few-shot"
+    cfg.learning_setting = "full"   # selecting from "full", "zero-shot", "few-shot"
 
     cfg.zero_shot = CfgNode(new_allowed=True)
     cfg.zero_shot.parent_config = 'learning_setting'
@@ -197,12 +196,12 @@ def get_default_config():
     cfg.pmi_calibrate.parent_config = 'calibrate'
 
     ## PROMPT SPECIFIC CONFIG ############################################
-    cfg.template = None
-    cfg.verbalizer = None
+    cfg.template = 'manual_template'
+    cfg.verbalizer = 'manual_verbalizer'
 
     cfg.manual_template = CfgNode(new_allowed=True)
     cfg.manual_template.parent_config = 'template'
-    cfg.manual_template.text = None 
+    cfg.manual_template.text = ["<text_a>", "It", "was", "<mask>"]
     cfg.manual_template.mask_token = '<mask>'
     cfg.manual_template.placeholder_mapping = CfgNode(new_allowed=True)
     cfg.manual_template.placeholder_mapping['<text_a>'] = 'text_a'
@@ -221,7 +220,7 @@ def get_default_config():
     cfg.automatic_verbalizer.balance = True
     cfg.automatic_verbalizer.optimize = CfgNode(new_allowed=True)
     cfg.automatic_verbalizer.optimize.level = 'epoch'
-    cfg.automatic_verbalizer.num_classes = None
+    cfg.automatic_verbalizer.num_classes = 2
     cfg.automatic_verbalizer.init_using_split = 'valid'
 
     cfg.one2one_verbalizer = CfgNode(new_allowed=True)
@@ -236,12 +235,12 @@ def get_default_config():
     
     cfg.manual_verbalizer = CfgNode(new_allowed=True)
     cfg.manual_verbalizer.parent_config = 'verbalizer'
-    cfg.manual_verbalizer.label_words = None
+    cfg.manual_verbalizer.abel_words = ['negative', 'positive']
     cfg.manual_verbalizer.prefix = " "
     cfg.manual_verbalizer.multi_token_handler = 'first'
     cfg.manual_verbalizer.file_path = None
     cfg.manual_verbalizer.choice = None
-    cfg.manual_verbalizer.num_classes = None
+    cfg.manual_verbalizer.num_classes = 2
     cfg.manual_verbalizer.optimize = None
 
     cfg.prefix_tuning_template = CfgNode(new_allowed=True)

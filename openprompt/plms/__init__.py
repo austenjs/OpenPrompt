@@ -10,7 +10,7 @@ from transformers import BertConfig, BertTokenizer, BertModel, BertForMaskedLM, 
                          AlbertTokenizer, AlbertConfig, AlbertModel, AlbertForMaskedLM, \
                          T5Config, T5Tokenizer, T5ForConditionalGeneration, \
                          OpenAIGPTTokenizer, OpenAIGPTLMHeadModel, OpenAIGPTConfig, \
-                         GPT2Config, GPT2Tokenizer, GPT2LMHeadModel      
+                         GPT2Config, GPT2Tokenizer, GPT2LMHeadModel  
 from collections import namedtuple
 from yacs.config import CfgNode
 
@@ -25,10 +25,10 @@ _MODEL_CLASSES = {
         'tokenizer': BertTokenizer,
         'model':BertForMaskedLM,
     }),
-    'roberta': ModelClass(**{
+    'roberta-base': ModelClass(**{
         'config': RobertaConfig,
         'tokenizer': RobertaTokenizer,
-        'model':RobertaForMaskedLM,
+        'model': RobertaForMaskedLM,
     }),
     'albert': ModelClass(**{
         'config': AlbertConfig,

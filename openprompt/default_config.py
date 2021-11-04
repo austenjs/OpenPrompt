@@ -26,8 +26,7 @@ def get_default_config():
     # PLM PARAMETERS
     ##################################
     cfg.plm = CfgNode(new_allowed=True)    
-    cfg.plm.model_name = None # the model name, e.g. bert, roberta, gpt2, ...
-                # for all the available model, please check the ./plms directory.
+    cfg.plm.model_name = 'roberta-base'
     cfg.plm.model_path = None
     cfg.plm.specials_to_add = ['<pad>'] # always need to add pad token, if the tokenizer doesn't have one.
     cfg.plm.optimize = CfgNode(new_allowed=True) 

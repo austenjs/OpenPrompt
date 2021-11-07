@@ -96,7 +96,7 @@ class ManualVerbalizer(Verbalizer):
                              + [[0]*max_len]*(max_num_label_words-len(ids_per_label)) 
                              for ids_per_label in all_ids]
         
-        words_ids_tensor = torch.tensor(words_ids).to(devide = 'cuda:0')
+        words_ids_tensor = torch.tensor(words_ids).to(device = 'cuda:0')
         words_ids_mask = torch.tensor(words_ids_mask).to(device = 'cuda:0')
         self.label_words_ids = nn.Parameter(words_ids_tensor, requires_grad=False)
         self.words_ids_mask = nn.Parameter(words_ids_mask, requires_grad=False) # A 3-d mask

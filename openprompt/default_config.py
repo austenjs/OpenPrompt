@@ -67,7 +67,7 @@ def get_default_config():
         #- datetime  # a 12-digit string recording the date time of running the experiment, i.e., YYMMDDHHMMSS.
     cfg.logging.datetime_format = "%y%m%d%H%M%S" # only useful when unique_string_keys includes `datetime`.
         #  make sure it's a valid format for datetime package.
-    cfg.logging.path = None # always keep none to let the config generate a full path according to 
+    cfg.logging.path = './results' # always keep none to let the config generate a full path according to 
             # path_base and unique_string.
     cfg.logging.overwrite = True # if a same log path exists, overwrite it.
 
@@ -106,7 +106,7 @@ def get_default_config():
 
     cfg.classification = CfgNode(new_allowed=True)
     cfg.classification.parent_config = 'task'
-    cfg.classification.metric = ['micro-f1']  # the first one will be the main  to determine checkpoint. whether the higher metric value is better.
+    cfg.classification.metric = ['accuracy']  # the first one will be the main  to determine checkpoint. whether the higher metric value is better.
     cfg.classification.loss_function = 'cross_entropy' # the loss function for classification
 
     # LMBFF-classification config ###########################################################W
@@ -116,9 +116,9 @@ def get_default_config():
 
     cfg.template_generator = CfgNode(new_allowed=True)
     cfg.template_generator.plm = CfgNode(new_allowed=True)
-    cfg.template_generator.plm.model_name = 't5' # the model name, e.g. bert, roberta, gpt2, ...
+    cfg.template_generator.plm.model_name = 'roberta-base' # the model name, e.g. bert, roberta, gpt2, ...
                 # for all the available model, please check the ./plms directory.
-    cfg.template_generator.plm.model_path = None
+    cfg.template_generator.plm.model_path = 'roberta-base'
     cfg.template_generator.plm.specials_to_add = ['<pad>'] # always need to add pad token, if the tokenizer doesn't have one.
 
     cfg.template_generator.max_length = 20 # maximum length of generated template     

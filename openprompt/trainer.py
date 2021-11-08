@@ -72,6 +72,7 @@ class BaseRunner(object):
         if start_epoch == 0:
             self.prompt_initialize()
             max_score = None
+        accuracy_scores = []
         for epoch in range(start_epoch, self.config.train.num_epochs):
             total_loss = self.train_epoch(epoch)
             scores = self.evaluate(self.valid_dataloader, "Valid")
@@ -87,6 +88,7 @@ class BaseRunner(object):
                 "max_score": max_score
             }
             cur_score = scores.popitem()[1]
+            accuracy_scores.append(cur_score)
 
             is_best = ((cur_score - max_score)>=0) == \
                 self.config.checkpoint.higher_better if max_score is not None else True
@@ -102,6 +104,7 @@ class BaseRunner(object):
         self.inner_model.load_state_dict(state_dict['state_dict'])
         self.inner_model.to("cuda:{}".format(self.config.environment.local_rank))
         self.evaluate(self.test_dataloader, "Test")
+        return accuracy_scores
 
     def resume(self, ):
         logger.info("Resume Training ...")

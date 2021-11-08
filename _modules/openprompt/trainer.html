@@ -161,6 +161,7 @@
         <span class="k">if</span> <span class="n">start_epoch</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">prompt_initialize</span><span class="p">()</span>
             <span class="n">max_score</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">accuracy_scores</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">):</span>
             <span class="n">total_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
             <span class="n">scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_dataloader</span><span class="p">,</span> <span class="s2">&quot;Valid&quot;</span><span class="p">)</span>
@@ -176,6 +177,7 @@
                 <span class="s2">&quot;max_score&quot;</span><span class="p">:</span> <span class="n">max_score</span>
             <span class="p">}</span>
             <span class="n">cur_score</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">popitem</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">accuracy_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_score</span><span class="p">)</span>
 
             <span class="n">is_best</span> <span class="o">=</span> <span class="p">((</span><span class="n">cur_score</span> <span class="o">-</span> <span class="n">max_score</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> \
                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">checkpoint</span><span class="o">.</span><span class="n">higher_better</span> <span class="k">if</span> <span class="n">max_score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">True</span>
@@ -191,6 +193,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">inner_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">[</span><span class="s1">&#39;state_dict&#39;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inner_model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cuda:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">local_rank</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">,</span> <span class="s2">&quot;Test&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">accuracy_scores</span>
 
     <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Resume Training ...&quot;</span><span class="p">)</span>

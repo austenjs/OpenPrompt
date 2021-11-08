@@ -206,9 +206,12 @@ class ClassificationRunner(BaseRunner):
         if not self.config.plm.optimize.freeze_para:
             no_decay = self.config.plm.optimize.no_decay
             weight_decay = self.config.plm.optimize.weight_decay
+            parameters = self.prompt_model.parameters()
+            to_optimize_with_decay = ['lm_head.dense.weight', 'lm_head.layer_norm.weight']
+            to_optimize_no_decay = ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.bias']
             optimizer_grouped_parameters = [
-                {'params': ['lm_head.dense.weight', 'lm_head.layer_norm.weight'],'weight_decay': weight_decay},
-                {'params': ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.bias'],'weight_decay': 0.0}
+                {'params': list(map(lambda param: parameters[param], to_optimize_with_decay)), 'weight_decay': weight_decay},
+                {'params': list(map(lambda param: parameters[param], to_optimize_no_decay)),'weight_decay': 0.0}
             ]
 
             self.model_optimizer = AdamW(
